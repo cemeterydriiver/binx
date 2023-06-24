@@ -27,11 +27,27 @@ pip install https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyaudio
 ```
 **Linux:**
 ```bash
-pip install pipwin
+sudo apt install portaudio19-dev python-all-dev
+```
+ou
+```bash
+sudo apt-get install python-pyaudio python3-pyaudio
+```
+ou
+```bash
+pip install PyAudio
 ```
 ```bash
-pipwin install pyaudio
+pip3 install PyAudio
 ```
+```bash
+python -m pip install PyAudio
+```
+```bash
+python -m pip3 install PyAudio
+```
+
+
 
 
 
