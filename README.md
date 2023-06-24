@@ -16,11 +16,23 @@ pip install pyttsx3
 pip install PyAudio
 ```
 ### Para instalar o PyAudio para python3.6+ :
-1- baixa o arquivo [Pyaudio-0.2.11-cp39-cp39-win_amd64](https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyaudio)
+
+**Windows:**
+
+1- baixe o arquivo [Pyaudio-0.2.11-cp39-cp39-win_amd64](https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyaudio)
+
 2- no diretório que o arquivo foi baixado, execute o seguinte comando via terminal:
 ```bash
 pip install https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyaudio
 ```
+**Linux:**
+```bash
+pip install pipwin
+```
+```bash
+pipwin install pyaudio
+```
+
 
 
   
