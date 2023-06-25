@@ -1,29 +1,24 @@
+#importando bibliotecas (a do audio já vem quando é baixada)
+
 import speech_recognition as sr
 import pyttsx3
 import datetime
 import wikipedia
 import pywhatkit
-import webbrowser
 
-# Objeto para reconhecer nosso áudio
+#objeto para reconhecer o audio
+
 audio = sr.Recognizer()
 binx = pyttsx3.init()
-
-# Configurações da voz do pyttsx3
-vozes = binx.getProperty('voices')
-binx.setProperty('voice', vozes[30].id)
 binx.setProperty('volume', 0.8)
-binx.setProperty('rate', 100)
-
-# Mensagens de boas-vindas
+binx.setProperty('rate', 150)
 binx.say('Olá, eu sou o Binx')
-binx.runAndWait()
 binx.say('Como posso te ajudar?')
 binx.runAndWait()
 
 
 def executaComando():
-    comando = ""  # Inicializa com um valor padrão
+    comando = "" 
     try:
         with sr.Microphone() as source:
             print('Ouvindo...')
@@ -43,7 +38,7 @@ def comandoVozUser():
     comando = executaComando()
     if 'horas' in comando:
         hora = datetime.datetime.now().strftime('%H:%M')
-        binx.say('Agora são ' + hora)
+        binx.say('Agora são' +hora)
         binx.runAndWait()
     elif 'procure por' in comando:
         procurar = comando.replace('procure por', '')
@@ -57,10 +52,4 @@ def comandoVozUser():
         result = pywhatkit.playonyt(musica)
         binx.say('Tocando música')
         binx.runAndWait()
-    elif 'abrir documento' in comando:
-        webbrowser.open('https://docs.google.com/document/u/0/create')
-        binx.say('Abrindo o Google Docs')
-        binx.runAndWait()
-
-
 comandoVozUser()
