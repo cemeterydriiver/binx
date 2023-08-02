@@ -1,9 +1,9 @@
 import speech_recognition as sr
 import pyttsx3
 import datetime
-import wikipedia
 import pywhatkit
 import webbrowser
+import AppOpener#para abrir os apps pip install AppOpener
 
 # Inicializando o objeto para reconhecer o áudio
 audio = sr.Recognizer()
@@ -40,13 +40,47 @@ def comandoVozUser():
         hora = datetime.datetime.now().strftime('%H:%M')
         binx.say('Agora são ' + hora)
         binx.runAndWait()
-    elif 'procure por' in comando:
-        procurar = comando.replace('procure por', '')
-        wikipedia.set_lang('pt')
-        result = wikipedia.summary(procurar, 2)
-        print(result)
-        binx.say(result)
-        binx.runAndWait()
+    elif 'pesquisar na web por' in comando:
+        consulta = comando.replace('pesquisar na web por', '').strip()
+        if consulta:
+            url = f'https://www.google.com/search?q={consulta}'
+            webbrowser.open(url)
+            binx.say('Aqui estão os resultados da pesquisa.')
+            binx.runAndWait()
+        else:
+            binx.say('Por favor, especifique a consulta de pesquisa.')
+            binx.runAndWait()
+    elif 'Abrir Geekie One' in comando:
+        consulta = comando.replace('Abrir Geekie One', '').strip()
+        if consulta:
+            url = f'https://one.geekie.com.br/'
+            webbrowser.open(url)
+            binx.say('Bons estudos!')
+            binx.runAndWait()
+        else:
+            binx.say('Por favor, especifique a consulta de pesquisa.')
+            binx.runAndWait()
+
+    elif 'Abrir Classroom' in comando:
+        consulta = comando.replace('Abrir Classroom', '').strip()
+        if consulta:
+            url = f'https://classroom.google.com/u/0/h'
+            webbrowser.open(url)
+            binx.say('Bons estudos!')
+            binx.runAndWait()
+        else:
+            binx.say('Por favor, especifique a consulta de pesquisa.')
+            binx.runAndWait()
+    elif 'Abrir espaço do estudante' in comando:
+        consulta = comando.replace('Abrir Classroom', '').strip()
+        if consulta:
+            url = f'https://estudante.sesisenai.org.br/login'
+            webbrowser.open(url)
+            binx.say('Bons estudos!')
+            binx.runAndWait()
+        else:
+            binx.say('Por favor, especifique a consulta de pesquisa.')
+            binx.runAndWait()
     elif 'toque' in comando:
         musica = comando.replace('toque', '')
         pywhatkit.playonyt(musica)
@@ -62,6 +96,7 @@ def comandoVozUser():
         else:
             binx.say('Por favor, especifique a tarefa.')
             binx.runAndWait()
+    
     elif 'ler minha lista de tarefas' in comando:
         with open('tarefas.txt', 'r') as arquivo:
             lista_tarefas = arquivo.read()
@@ -84,16 +119,7 @@ def comandoVozUser():
         else:
             binx.say('Por favor, especifique o lembrete.')
             binx.runAndWait()
-    elif 'pesquisar na web por' in comando:
-        consulta = comando.replace('pesquisar na web por', '').strip()
-        if consulta:
-            url = f'https://www.google.com/search?q={consulta}'
-            webbrowser.open(url)
-            binx.say('Aqui estão os resultados da pesquisa.')
-            binx.runAndWait()
-        else:
-            binx.say('Por favor, especifique a consulta de pesquisa.')
-            binx.runAndWait()
+   
 
 
 comandoVozUser()
