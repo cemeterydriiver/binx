@@ -3,12 +3,11 @@ import pyttsx3
 import datetime
 import pywhatkit
 import webbrowser
-import AppOpener#para abrir os apps pip install AppOpener
+import subprocess
+import AppOpener #para abrir os apps pip install AppOpener
 
-# Inicializando o objeto para reconhecer o áudio
 audio = sr.Recognizer()
 
-# Inicializando o objeto para sintetizar a fala
 binx = pyttsx3.init()
 binx.setProperty('volume', 0.8)
 binx.setProperty('rate', 150)
@@ -33,13 +32,36 @@ def executaComando():
         print('ERRO: Microfone não está funcionando.')
     return comando
 
+sitesEducacionais = [['geekieOne', 'https://one.geekie.com.br/'], 
+                     ['classroom', 'https://classroom.google.com/u/0/h'], 
+                     ['espaço do estudante', 'https://estudante.sesisenai.org.br/login']]
+
+
+def abrirApp(app):
+    appsEducacionais = {
+        'vscode': 'code',  
+        'git': 'git',      
+    }
+    if app in appsEducacionais:
+        try:
+            subprocess.Popen(appsEducacionais[app], shell=True)
+            binx.say(f'Abrindo {app}')
+            binx.runAndWait()
+        except Exception as e:
+            print(f'Erro ao abrir {app}: {e}')
+    else:
+        binx.say('Aplicativo não encontrado na lista.')
+        binx.runAndWait()
+
 
 def comandoVozUser():
     comando = executaComando()
+
     if 'horas' in comando:
         hora = datetime.datetime.now().strftime('%H:%M')
         binx.say('Agora são ' + hora)
         binx.runAndWait()
+
     elif 'pesquisar na web por' in comando:
         consulta = comando.replace('pesquisar na web por', '').strip()
         if consulta:
@@ -50,42 +72,31 @@ def comandoVozUser():
         else:
             binx.say('Por favor, especifique a consulta de pesquisa.')
             binx.runAndWait()
-    elif 'Abrir Geekie One' in comando:
-        consulta = comando.replace('Abrir Geekie One', '').strip()
-        if consulta:
-            url = f'https://one.geekie.com.br/'
-            webbrowser.open(url)
-            binx.say('Bons estudos!')
-            binx.runAndWait()
-        else:
-            binx.say('Por favor, especifique a consulta de pesquisa.')
+
+    elif 'abrir' in comando:
+        consulta = comando.replace('abrir', '').strip()
+        siteEncontrado = False
+        for site in sitesEducacionais:
+            if site[0].lower() in consulta:
+                webbrowser.open(site[1])
+                binx.say('Bons estudos!')
+                binx.runAndWait()
+                siteEncontrado = True
+                break  
+        if not siteEncontrado:
+            binx.say('Site educacional não encontrado na lista.')
             binx.runAndWait()
 
-    elif 'Abrir Classroom' in comando:
-        consulta = comando.replace('Abrir Classroom', '').strip()
-        if consulta:
-            url = f'https://classroom.google.com/u/0/h'
-            webbrowser.open(url)
-            binx.say('Bons estudos!')
-            binx.runAndWait()
-        else:
-            binx.say('Por favor, especifique a consulta de pesquisa.')
-            binx.runAndWait()
-    elif 'Abrir espaço do estudante' in comando:
-        consulta = comando.replace('Abrir Classroom', '').strip()
-        if consulta:
-            url = f'https://estudante.sesisenai.org.br/login'
-            webbrowser.open(url)
-            binx.say('Bons estudos!')
-            binx.runAndWait()
-        else:
-            binx.say('Por favor, especifique a consulta de pesquisa.')
-            binx.runAndWait()
+    elif 'abra o aplicativo' in comando:
+        consulta = comando.replace('Abra o aplicativo', '').strip()
+        abrirApp(consulta.lower())
+    
     elif 'toque' in comando:
         musica = comando.replace('toque', '')
         pywhatkit.playonyt(musica)
         binx.say('Tocando música')
         binx.runAndWait()
+
     elif 'criar uma tarefa' in comando:
         tarefa = comando.replace('criar uma tarefa', '').strip()
         if tarefa:
@@ -107,13 +118,14 @@ def comandoVozUser():
         else:
             binx.say('Sua lista de tarefas está vazia.')
             binx.runAndWait()
+
     elif 'definir um lembrete' in comando:
         lembrete = comando.replace('definir um lembrete', '').strip()
         if lembrete:
             agora = datetime.datetime.now()
-            hora_atual = agora.strftime('%H:%M')
+            horaAtual = agora.strftime('%H:%M')
             with open('tarefas.txt', 'a') as arquivo:
-                arquivo.write(f'{lembrete} às {hora_atual}\n')
+                arquivo.write(f'{lembrete} às {horaAtual}\n')
             binx.say('Lembrete definido.')
             binx.runAndWait()
         else:
