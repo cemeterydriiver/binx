@@ -7,8 +7,6 @@ import subprocess
 from requests import get
 import os
 import time
-import sys
-import AppOpener
 
 audio = sr.Recognizer()
 binx = pyttsx3.init()
@@ -18,9 +16,6 @@ binx.say('Olá, eu sou o Binx')
 binx.say('Como posso te ajudar?')
 binx.runAndWait()
 
-sitesEducacionais = [['geekieOne', 'https://one.geekie.com.br/'], 
-                     ['classroom', 'https://classroom.google.com/u/0/h'], 
-                     ['espaço do estudante', 'https://estudante.sesisenai.org.br/login']]
 
 def executaComando():
     comando = ""
@@ -37,6 +32,11 @@ def executaComando():
     except:
         print('ERRO: Microfone não está funcionando.')
     return comando
+
+
+sitesEducacionais = [['geekieOne', 'https://one.geekie.com.br/'], 
+                     ['classroom', 'https://classroom.google.com/u/0/h'], 
+                     ['espaço do estudante', 'https://estudante.sesisenai.org.br/login']]
 
 # abri apps (testar)
 def abrirApp(app):
@@ -154,9 +154,4 @@ def comandoVozUser():
     elif 'cancelar desligamento' in comando:
         os.system("shutdown -a")
         
-
-
-	
-
-
 comandoVozUser()
