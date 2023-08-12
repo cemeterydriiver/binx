@@ -4,10 +4,9 @@ import datetime
 import pywhatkit
 import webbrowser
 import subprocess
-import AppOpener #para abrir os apps pip install AppOpener
+import AppOpener
 
 audio = sr.Recognizer()
-
 binx = pyttsx3.init()
 binx.setProperty('volume', 0.8)
 binx.setProperty('rate', 150)
@@ -31,10 +30,6 @@ def executaComando():
     except:
         print('ERRO: Microfone não está funcionando.')
     return comando
-
-sitesEducacionais = [['geekieOne', 'https://one.geekie.com.br/'], 
-                     ['classroom', 'https://classroom.google.com/u/0/h'], 
-                     ['espaço do estudante', 'https://estudante.sesisenai.org.br/login']]
 
 
 def abrirApp(app):
@@ -71,20 +66,6 @@ def comandoVozUser():
             binx.runAndWait()
         else:
             binx.say('Por favor, especifique a consulta de pesquisa.')
-            binx.runAndWait()
-
-    elif 'abrir' in comando:
-        consulta = comando.replace('abrir', '').strip()
-        siteEncontrado = False
-        for site in sitesEducacionais:
-            if site[0].lower() in consulta:
-                webbrowser.open(site[1])
-                binx.say('Bons estudos!')
-                binx.runAndWait()
-                siteEncontrado = True
-                break  
-        if not siteEncontrado:
-            binx.say('Site educacional não encontrado na lista.')
             binx.runAndWait()
 
     elif 'abra o aplicativo' in comando:
