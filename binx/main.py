@@ -18,9 +18,6 @@ binx.say('Olá, eu sou o Binx')
 binx.say('Como posso te ajudar?')
 binx.runAndWait()
 
-#abra o site que a pessoa pedir
-#se o site for um site da lista dos sites educacionais, o binx vai falar algo como "bons estudos", ou algo do tipo
-
 sitesEducacionais = [['geekieOne', 'https://one.geekie.com.br/'], 
                      ['classroom', 'https://classroom.google.com/u/0/h'], 
                      ['espaço do estudante', 'https://estudante.sesisenai.org.br/login']]
@@ -94,7 +91,7 @@ def comandoVozUser():
         if not siteEncontrado:
             binx.say('Site educacional não encontrado na lista.')
             binx.runAndWait()
-            
+
     # abre app (testar)
     elif 'abra o aplicativo' in comando:
         consulta = comando.replace('Abra o aplicativo', '').strip()
