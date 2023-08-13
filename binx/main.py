@@ -38,12 +38,13 @@ sitesEducacionais = [['geekieOne', 'https://one.geekie.com.br/'],
                      ['classroom', 'https://classroom.google.com/u/0/h'], 
                      ['espaço do estudante', 'https://estudante.sesisenai.org.br/login']]
 
-# abri apps (testar)
-def abrirApp(app):
-    appsEducacionais = {
+appsEducacionais = {
         'vscode': 'code',  
         'git': 'git',      
     }
+
+# abri apps (testar)
+def abrirApp(app):
     if app in appsEducacionais:
         try:
             subprocess.Popen(appsEducacionais[app], shell=True)
