@@ -111,7 +111,22 @@ def news(binx):
         binx.say('Desculpe, não foi possível buscar notícias no momento.')
         binx.runAndWait()
 
-
+def openApplication(command, binx):
+    if 'google chrome' in command:
+        os.startfile("C:\Program Files\Google\Chrome\Application\chrome.exe")
+        binx.say('Abrindo o Google Chrome')
+        binx.runAndWait()
+    elif 'visual studio' in command:
+        os.startfile("")
+        binx.say('Abrindo o Visual Studio')
+        binx.runAndWait()
+    elif 'visual studio code' in command:
+        os.startfile("<caminho para o Visual Studio Code na sua máquina>")
+        binx.say('Abrindo o Visual Studio Code')
+        binx.runAndWait()
+    else:
+        binx.say('Desculpe, não reconheço esse aplicativo.')
+        binx.runAndWait()
 
 
 def main():
@@ -140,6 +155,9 @@ def main():
 
         elif 'notícias' in command:
              news(binx)
+
+        elif 'abra a aplicação' in command:
+            openApplication(command, binx)     
 
         elif 'desligar computador' in command:
             shutdownComputer(command, binx)
