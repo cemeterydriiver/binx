@@ -120,10 +120,6 @@ def openApplication(command, binx):
         os.startfile("")
         binx.say('Abrindo o Visual Studio')
         binx.runAndWait()
-    elif 'visual studio code' in command:
-        os.startfile("<caminho para o Visual Studio Code na sua máquina>")
-        binx.say('Abrindo o Visual Studio Code')
-        binx.runAndWait()
     else:
         binx.say('Desculpe, não reconheço esse aplicativo.')
         binx.runAndWait()
