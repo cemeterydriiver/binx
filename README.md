@@ -15,6 +15,9 @@ pip install pyttsx3
 ```bash
 pip install PyAudio
 ```
+
+pip install lxml
+
 ### Para instalar o PyAudio para python3.6+ :
 
 **Windows:**
@@ -46,6 +49,8 @@ python -m pip install PyAudio
 ```bash
 python -m pip3 install PyAudio
 ```
+
+
 
 
 

@@ -5,6 +5,9 @@ import pywhatkit
 import webbrowser
 import os
 import time
+import requests
+import translate
+from bs4 import BeautifulSoup
 
 def binxInit():
     binx = pyttsx3.init()
@@ -33,7 +36,6 @@ def executeComand(binx, audio):
                 binx.say(command)
                 binx.runAndWait()            
             return command
-        
     except sr.UnknownValueError:
         print('ERRO: Não foi possível entender o áudio.')
         return ""
@@ -77,6 +79,7 @@ def playMusic(command, binx):
     binx.say('Tocando música')
     binx.runAndWait()
 
+
 def shutdownComputer(command, binx):
     if 'uma hora' in command:
         os.system("shutdown -s -t 3600")
@@ -90,6 +93,26 @@ def shutdownComputer(command, binx):
 
 def cancelShutdown(binx):
     os.system("shutdown -a")
+
+def news(binx):
+    try:
+        site = requests.get('https://news.google.com/news/rss?ned=pt_br&gl=BR&hl=pt')
+        news = BeautifulSoup(site.text, 'xml')
+        
+        binx.say('Aqui estão as notícias mais recentes:')
+        binx.runAndWait()
+        
+        for item in news.findAll('item')[:5]:
+            message = item.title.text
+            binx.say(message)
+            binx.runAndWait()
+    except Exception as e:
+        print(f"Erro ao buscar notícias: {e}")
+        binx.say('Desculpe, não foi possível buscar notícias no momento.')
+        binx.runAndWait()
+
+
+
 
 def main():
     audio = sr.Recognizer()
@@ -114,7 +137,10 @@ def main():
 
         elif 'toque' in command:
             playMusic(command, binx)
-        
+
+        elif 'notícias' in command:
+             news(binx)
+
         elif 'desligar computador' in command:
             shutdownComputer(command, binx)
         elif 'cancelar desligamento' in command:
