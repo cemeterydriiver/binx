@@ -4,7 +4,6 @@ import datetime
 import pywhatkit
 import webbrowser
 import subprocess
-from requests import get
 import os
 import time
 
@@ -16,6 +15,9 @@ binx.say('Olá, eu sou o Binx')
 binx.say('Como posso te ajudar?')
 binx.runAndWait()
 
+sitesEducacionais = [['geekieOne', 'https://one.geekie.com.br/'], 
+                     ['classroom', 'https://classroom.google.com/u/0/h'], 
+                     ['espaço do estudante', 'https://estudante.sesisenai.org.br/login']]
 
 def executaComando():
     comando = ""
@@ -33,126 +35,62 @@ def executaComando():
         print('ERRO: Microfone não está funcionando.')
     return comando
 
-
-sitesEducacionais = [['geekieOne', 'https://one.geekie.com.br/'], 
-                     ['classroom', 'https://classroom.google.com/u/0/h'], 
-                     ['espaço do estudante', 'https://estudante.sesisenai.org.br/login']]
-
-appsEducacionais = {
-        'vscode': 'code',  
-        'git': 'git',      
-    }
-
-# abri apps (testar)
-def abrirApp(app):
-    if app in appsEducacionais:
-        try:
-            subprocess.Popen(appsEducacionais[app], shell=True)
-            binx.say(f'Abrindo {app}')
-            binx.runAndWait()
-        except Exception as e:
-            print(f'Erro ao abrir {app}: {e}')
-    else:
-        binx.say('Aplicativo não encontrado na lista.')
-        binx.runAndWait()
-
-                
 def comandoVozUser():
-    comando = executaComando()
+    while True:
+        comando = executaComando()
 
-    # horário
-    if 'horas' in comando:
-        hora = datetime.datetime.now().strftime('%H:%M')
-        binx.say('Agora são ' + hora)
-        binx.runAndWait()
-
-    # pesquisa na web
-    elif 'pesquisar na web por' in comando:
-        consulta = comando.replace('pesquisar na web por', '').strip()
-        if consulta:
-            url = f'https://www.google.com/search?q={consulta}'
-            webbrowser.open(url)
-            binx.say('Aqui estão os resultados da pesquisa.')
+        if 'sair' in comando:
+            binx.say('Até mais!')
             binx.runAndWait()
-        else:
-            binx.say('Por favor, especifique a consulta de pesquisa.')
+            break
+
+        if 'horas' in comando:
+            hora = datetime.datetime.now().strftime('%H:%M')
+            binx.say('Agora são ' + hora)
             binx.runAndWait()
 
-    # abrir site educacional
-    elif 'abrir' in comando:
-        consulta = comando.replace('abrir', '').strip()
-        siteEncontrado = False
-        for site in sitesEducacionais:
-            if site[0].lower() in consulta:
-                webbrowser.open(site[1])
-                binx.say('Bons estudos!')
+        elif 'pesquisar na web por' in comando:
+            consulta = comando.replace('pesquisar na web por', '').strip()
+            if consulta:
+                url = f'https://www.google.com/search?q={consulta}'
+                webbrowser.open(url)
+                binx.say('Aqui estão os resultados da pesquisa.')
                 binx.runAndWait()
-                siteEncontrado = True
-                break  
-        if not siteEncontrado:
-            binx.say('Site educacional não encontrado na lista.')
+            else:
+                binx.say('Por favor, especifique a consulta de pesquisa.')
+                binx.runAndWait()
+
+        elif 'abrir' in comando:
+            consulta = comando.replace('abrir', '').strip()
+            siteEncontrado = False
+            for site in sitesEducacionais:
+                if site[0].lower() in consulta:
+                    webbrowser.open(site[1])
+                    binx.say('Bons estudos!')
+                    binx.runAndWait()
+                    siteEncontrado = True
+                    break
+            if not siteEncontrado:
+                binx.say('Site educacional não encontrado na lista.')
+                binx.runAndWait()
+
+        elif 'toque' in comando:
+            musica = comando.replace('toque', '')
+            pywhatkit.playonyt(musica)
+            binx.say('Tocando música')
             binx.runAndWait()
 
-    # abre app (testar)
-    elif 'abra o aplicativo' in comando:
-        consulta = comando.replace('Abra o aplicativo', '').strip()
-        abrirApp(consulta.lower())
-    
-    # toca música pelo youtube
-    elif 'toque' in comando:
-        musica = comando.replace('toque', '')
-        pywhatkit.playonyt(musica)
-        binx.say('Tocando música')
-        binx.runAndWait()
-
-    # cria tarefas no terminal
-    elif 'criar uma tarefa' in comando:
-        tarefa = comando.replace('criar uma tarefa', '').strip()
-        if tarefa:
-            with open('tarefas.txt', 'a') as arquivo:
-                arquivo.write(f'{tarefa}\n')
-            binx.say('Tarefa adicionada à lista de tarefas.')
-            binx.runAndWait()
-        else:
-            binx.say('Por favor, especifique a tarefa.')
-            binx.runAndWait()
-    
-    elif 'ler minha lista de tarefas' in comando:
-        with open('tarefas.txt', 'r') as arquivo:
-            lista_tarefas = arquivo.read()
-        if lista_tarefas:
-            binx.say('Aqui está a sua lista de tarefas:')
-            binx.say(lista_tarefas)
-            binx.runAndWait()
-        else:
-            binx.say('Sua lista de tarefas está vazia.')
-            binx.runAndWait()
-
-    # definir lembrete (testar)
-    elif 'definir um lembrete' in comando:
-        lembrete = comando.replace('definir um lembrete', '').strip()
-        if lembrete:
-            agora = datetime.datetime.now()
-            horaAtual = agora.strftime('%H:%M')
-            with open('tarefas.txt', 'a') as arquivo:
-                arquivo.write(f'{lembrete} às {horaAtual}\n')
-            binx.say('Lembrete definido.')
-            binx.runAndWait()
-        else:
-            binx.say('Por favor, especifique o lembrete.')
-            binx.runAndWait()
-    
-    # desligar o pc
-    elif 'desligar computador' in comando and 'uma hora' in comando:
-        os.system("shutdown -s -t 3600")
-    elif 'desligar computador' in comando and 'meia hora' in comando:
-        os.system("shutdown -s -t 1800")
-    elif 'desligar computador' in comando and 'agora' in comando:
-        for i in range(5, 0, -1):
-            binx.say(f'Desligando o pc em {i}...')
-            time.sleep(1)  # Pausa por 1 segundo
+        elif 'desligar computador' in comando and 'uma hora' in comando:
+            os.system("shutdown -s -t 3600")
+        elif 'desligar computador' in comando and 'meia hora' in comando:
+            os.system("shutdown -s -t 1800")
+        elif 'desligar computador' in comando and 'agora' in comando:
+            for i in range(5, 0, -1):
+                binx.say(f'Desligando o pc em {i}...')
+                time.sleep(1)  
             os.system("shutdown -s -t 0")
-    elif 'cancelar desligamento' in comando:
-        os.system("shutdown -a")
-        
-comandoVozUser()
+        elif 'cancelar desligamento' in comando:
+            os.system("shutdown -a")
+
+if __name__ == "__main__":
+    comandoVozUser()
